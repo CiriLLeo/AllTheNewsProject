@@ -8,9 +8,6 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const isProduction = process.env.NODE_ENV == 'production';
 
 
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
 
 const config = {
     entry: './src/index.js',
@@ -27,8 +24,7 @@ const config = {
             filename: './index.html'
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css'
+            filename: 'index.css'
         })
 
         // Add your plugins here
