@@ -28,11 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.classList.add('card', 'border-success', 'mb-3');
       card.style.maxWidth = '50rem';
+
+      card.classList.add('shadow-lg', 'p-3', 'bg-body-tertiary', 'rounded');
   
       const cardHeader = document.createElement('div');
       cardHeader.classList.add('card-header');
       
-      // Condizione per impostare il testo del cardHeader in base al tipo di notizie
+      
       if (currentNewsType === 'best') {
         cardHeader.textContent = 'Best News';
       } else if (currentNewsType === 'top') {
@@ -79,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => console.error('Error fetching new news IDs:', error));
   }
 
-  // Carica le nuove storie quando la pagina è pronta
   loadNewStories();
 
     loadBestNewsBtn.addEventListener('click', () => {

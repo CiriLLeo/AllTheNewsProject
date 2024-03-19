@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+
+* {
+  font-family: "Share Tech", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 /* navbar */
 .navbar-brand {
   color: rgb(0, 0, 0) !important;
@@ -32,6 +41,7 @@
   justify-content: center;
   height: 100%;
   text-align: center; 
+  font-weight: bold;
 }
 
 /* end */
