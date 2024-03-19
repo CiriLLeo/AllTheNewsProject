@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const cardHeader = document.createElement('div');
       cardHeader.classList.add('card-header');
-      cardHeader.textContent = 'Header'; 
+      cardHeader.textContent = 'New Stories'; 
 
       const cardBody = document.createElement('div');
       cardBody.classList.add('card-body', 'text-success');
@@ -74,27 +74,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // Carica le nuove storie quando la pagina è pronta
   loadNewStories();
 
-  loadBestNewsBtn.addEventListener('click', () => {
-    callFetch('https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty')
-      .then(newsIds => {
-        currentNewsType = 'best';
-        newsContainer.innerHTML = ''; 
-        getNews(newsIds);
-        minNews += maxNews;
-      })
-      .catch(error => console.error('Error fetching best news IDs:', error));
-  });
+    loadBestNewsBtn.addEventListener('click', () => {
+      callFetch('https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty')
+        .then(newsIds => {
+          currentNewsType = 'best';
+          newsContainer.innerHTML = ''; 
+          getNews(newsIds);
+          minNews += maxNews;
+          document.querySelector('.card-header').textContent = 'Best News';
+        })
+        .catch(error => console.error('Error fetching best news IDs:', error));
+    });
 
-  loadTopNewsBtn.addEventListener('click', () => {
-    callFetch('https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty')
-      .then(newsIds => {
-        currentNewsType = 'top';
-        newsContainer.innerHTML = ''; 
-        getNews(newsIds);
-        minNews += maxNews;
-      })
-      .catch(error => console.error('Error fetching top news IDs:', error));
-  });
+    loadTopNewsBtn.addEventListener('click', () => {
+      callFetch('https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty')
+        .then(newsIds => {
+          currentNewsType = 'top';
+          newsContainer.innerHTML = ''; 
+          getNews(newsIds);
+          minNews += maxNews;
+          document.querySelector('.card-header').textContent = 'Top News'; 
+        })
+        .catch(error => console.error('Error fetching top news IDs:', error));
+    });
 
   loadMoreBtn.addEventListener('click', () => {
     const fetchUrl = currentNewsType === 'best' ? 'https://hacker-news.firebaseio.com/v0/beststories.json' : 'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty';
