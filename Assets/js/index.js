@@ -17,8 +17,8 @@ document.querySelector('body').appendChild(buttonContainer);
 document.addEventListener('DOMContentLoaded', () => {
     const newsContainer = document.getElementById('news-container')
     const loadMoreBtn = document.getElementById('load-more-btn')
-    let startIndex = 0
-    const batchSize = 10
+    let minNews = 0
+    const maxNews = 10
 
   // Funzione per fetchare
   function callFetch(url) {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Funzione per fetchare i dettagli dell'API globale
     function getNews(ids) {
-      const promises = ids.slice(startIndex, startIndex + batchSize)
+      const promises = ids.slice(minNews, minNews + maxNews)
         .map(id => callFetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`))
       
       Promise.all(promises)
@@ -57,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Richiamo la function che carica le prime 10 notizie
         getNews(newsIds)
-        startIndex += batchSize
+        minNews += maxNews
 
         // Aggiunta dell'handler per il pulsante "Load more"
         loadMoreBtn.addEventListener('click', () => {
           getNews(newsIds)
-          startIndex += batchSize
+          minNews += maxNews
         });
       })
       .catch(error => console.error('Error fetching news IDs:', error))
