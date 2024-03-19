@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newsArray.forEach(item => {
       const card = document.createElement('div');
       card.classList.add('card', 'border-success', 'mb-3');
-      card.style.maxWidth = '18rem';
+      card.style.maxWidth = '50rem';
   
       const cardHeader = document.createElement('div');
       cardHeader.classList.add('card-header');
