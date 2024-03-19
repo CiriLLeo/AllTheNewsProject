@@ -28,38 +28,46 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.classList.add('card', 'border-success', 'mb-3');
       card.style.maxWidth = '18rem';
-
+  
       const cardHeader = document.createElement('div');
       cardHeader.classList.add('card-header');
-      cardHeader.textContent = 'New Stories'; 
-
+      
+      // Condizione per impostare il testo del cardHeader in base al tipo di notizie
+      if (currentNewsType === 'best') {
+        cardHeader.textContent = 'Best News';
+      } else if (currentNewsType === 'top') {
+        cardHeader.textContent = 'Top News'; // Cambiato in 'Breaking News'
+      } else {
+        cardHeader.textContent = 'Breaking News';
+      }
+  
       const cardBody = document.createElement('div');
       cardBody.classList.add('card-body', 'text-success');
-
+  
       const cardTitle = document.createElement('h5');
       cardTitle.classList.add('card-title');
-      cardTitle.textContent = item.title; 
-
+      cardTitle.textContent = item.title;
+  
       const cardText = document.createElement('p');
       cardText.classList.add('card-text');
-      cardText.textContent = `Date: ${new Date(item.time * 1000).toLocaleString()}`; 
-
+      cardText.textContent = `Date: ${new Date(item.time * 1000).toLocaleString()}`;
+  
       const anchor = document.createElement('a');
       anchor.setAttribute('href', item.url);
       anchor.setAttribute('target', '_blank');
       anchor.textContent = 'Click here to read';
-
+  
       cardBody.appendChild(cardTitle);
       cardBody.appendChild(anchor);
       cardBody.appendChild(cardText);
-
+  
       card.appendChild(cardHeader);
       card.appendChild(cardBody);
-
+  
       newsContainer.appendChild(card);
     });
   }
-
+  
   function loadNewStories() {
     callFetch('https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty')
       .then(newsIds => {
@@ -107,5 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
         minNews += maxNews;
       })
       .catch(error => console.error('Error fetching news IDs:', error));
+  });
+
+  document.querySelector('.navbar-brand').addEventListener('click', () => {
+    loadNewStories();
   });
 });
