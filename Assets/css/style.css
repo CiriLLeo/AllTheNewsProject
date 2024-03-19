@@ -1,9 +1,38 @@
+/* navbar */
 .navbar-brand {
-  color: black !important;
+  color: rgb(0, 0, 0) !important;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 1rem;
 }
 
 .nav-item {
   font-weight: bold;
+  font-size: 1rem;
+}
+
+#welcome {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+/* news */
+#news-container,
+#anchor,
+#button-container,
+div p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.9rem;
+}
+
+#news-item {
+  border: 1px solid black;
+  padding: 0.3rem;
+}
+
+/* end */
+footer {
+  font-weight: bold;
+  font-size: 1rem;
 }
