@@ -1,79 +1,69 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
-/******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
+const newsContainer = document.createElement("div");
+newsContainer.setAttribute("id", "news-container");
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+const loadMoreBtn = document.createElement("button");
+loadMoreBtn.setAttribute("id", "load-more-btn");
+loadMoreBtn.textContent = "Load More";
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\nconsole.log(\"Hello World!\");\n\n//# sourceURL=webpack://my-webpack-project/./src/index.js?");
+const buttonContainer = document.createElement("div");
+buttonContainer.setAttribute("id", "button-container");
 
-/***/ }),
+buttonContainer.appendChild(loadMoreBtn);
 
-/***/ "./src/style.css":
-/*!***********************!*\
-  !*** ./src/style.css ***!
-  \***********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+document.querySelector('body').appendChild(newsContainer); 
+document.querySelector('body').appendChild(buttonContainer); 
 
-eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://my-webpack-project/./src/style.css?");
 
-/***/ })
+document.addEventListener('DOMContentLoaded', () => {
+    const newsContainer = document.getElementById('news-container')
+    const loadMoreBtn = document.getElementById('load-more-btn')
+    let startIndex = 0
+    const batchSize = 10
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
-/******/ 	
-/******/ })()
-;
+  // Funzione per fetchare
+  function callFetch(url) {
+    return fetch(url)
+      .then(response => response.json())
+    }
+
+  // Funzione per fetchare i dettagli dell'API globale
+    function getNews(ids) {
+      const promises = ids.slice(startIndex, startIndex + batchSize)
+        .map(id => callFetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`))
+      
+      Promise.all(promises)
+        .then(news => {
+         getNewsOnScreen(news)
+        })
+        .catch(error => console.error('Error fetching news:', error))
+      }
+  
+
+  // Funzione che renderizza le notizie
+    function getNewsOnScreen(Array) {
+      Array.forEach(item => {
+        const newsItem = document.createElement('div')
+        newsItem.setAttribute("id", "news-item");
+        newsItem.innerHTML = `<h3>${item.title}</h3>
+        <a id="anchor" href="${item.url}" target="_blank">Click here to read</a>
+        <p>Date: ${new Date(item.time * 1000).toLocaleString()}</p>`
+        newsContainer.appendChild(newsItem)
+      })
+    }
+
+    // Richiamo la function per fetchare l'API globale
+    callFetch('https://hacker-news.firebaseio.com/v0/newstories.json')
+      .then(newsIds => {
+
+        // Richiamo la function che carica le prime 10 notizie
+        getNews(newsIds)
+        startIndex += batchSize
+
+        // Aggiunta dell'handler per il pulsante "Load more"
+        loadMoreBtn.addEventListener('click', () => {
+          getNews(newsIds)
+          startIndex += batchSize
+        });
+      })
+      .catch(error => console.error('Error fetching news IDs:', error))
+  }) 
