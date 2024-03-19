@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadTopNewsBtn = document.getElementById('top');
   const loadMoreBtn = document.getElementById('load-more-btn');
   const newsContainer = document.getElementById('news-container');
-  let currentNewsType = '';
+  let currentNewsType = ''; 
   let minNews = 0;
   const maxNews = 10;
 
@@ -65,12 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(newsIds => {
         currentNewsType = 'new'; 
         newsContainer.innerHTML = ''; 
+        getNews(newsIds);
         minNews += maxNews;
       })
       .catch(error => console.error('Error fetching new news IDs:', error));
   }
 
-  
+  // Carica le nuove storie quando la pagina è pronta
   loadNewStories();
 
   loadBestNewsBtn.addEventListener('click', () => {
