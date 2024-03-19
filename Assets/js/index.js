@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const anchor = document.createElement('a');
       anchor.setAttribute('href', item.url);
       anchor.setAttribute('target', '_blank');
-      anchor.textContent = 'Click here to read';
+      anchor.textContent = 'Click To Read';
+      anchor.classList.add('btn', 'btn-outline-dark', 'mb-2');
   
       cardBody.appendChild(cardTitle);
       cardBody.appendChild(anchor);
