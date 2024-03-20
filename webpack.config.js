@@ -10,9 +10,10 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
-    entry: './src/index.js',
+    entry: 'Assets/js/index.js',
     output: {
         path: path.resolve(__dirname, 'Assets'),
+        clean: true
     },
     devServer: {
         open: true,
@@ -20,11 +21,50 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: './index.html'
-        }),
+            template: 'index.html',
+            meta: {
+              'og:title': { property: 'og:title', content: 'All Tech News' },
+              'og:description': {
+                property: 'og:description',
+                content:
+                  'All the news for tech people, using API from Hacker News.',
+              },
+              'og:type': { property: 'og:type', content: 'website' },
+              'og:url': {
+                property: 'og:url',
+                content: '',
+              },
+              'og:image': {
+                property: 'og:image',
+                content: 'Assets/img/android-chrome-512x512.png',
+              },
+              'og:image:alt': {
+                property: 'og:image:alt',
+                content: 'All Tech News',
+              },
+              'twitter:card': {
+                name: 'twitter:card',
+                content: 'summary_large_image',
+              },
+              'twitter:title': { name: 'twitter:title', content: 'All Tech News' },
+              'twitter:description': {
+                name: 'twitter:description',
+                content:
+                  'All the news for tech people, using API from Hacker News.',
+              },
+              'twitter:image': {
+                name: 'twitter:image',
+                content: 'Assets/img/android-chrome-512x512.png',
+              },
+              'twitter:image:alt': {
+                name: 'twitter:image:alt',
+                content: 'All Tech News',
+              },
+            },
+          }),
+
         new MiniCssExtractPlugin({
-            filename: 'index.css'
+            filename: 'Assets/css/style.css'
         })
 
         // Add your plugins here
@@ -42,7 +82,7 @@ const config = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: 'asset/resource',
             },
 
             // Add your rules for custom modules here
