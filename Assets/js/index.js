@@ -7,9 +7,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let minNews = 0;
   const maxNews = 10;
+  let currentNewsType = 'breaking';
+  let newsIds = [];
 
   function callFetch(url) {
     return fetch(url).then((response) => response.json());
+  }
+
+  function fetchNewsIds(newsType) {
+    const url =
+      newsType === 'best'
+        ? "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
+        : newsType === 'top'
+          ? "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
+          : "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty";
+    
+    return callFetch(url);
   }
 
   function getNews(ids) {
@@ -31,14 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.classList.add("card", "border-success", "mb-3");
       card.style.maxWidth = "50rem";
-
       card.classList.add("shadow-lg", "p-3", "bg-body-tertiary", "rounded");
 
       const cardHeader = document.createElement("div");
       cardHeader.classList.add("card-header");
-      
-      const urlParams = new URLSearchParams(window.location.search);
-      const currentNewsType = urlParams.get('type');
 
       if (currentNewsType === "best") {
         cardHeader.textContent = "Best News";
@@ -80,87 +89,60 @@ document.addEventListener("DOMContentLoaded", () => {
     footer.style.display = "none";
     loadMoreBtn.style.display = "none";
 
-    callFetch(
-      "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
-    )
-      .then((newsIds) => {
-        newsContainer.innerHTML = "";
-        getNews(newsIds);
-        minNews += maxNews;
+    getNews(newsIds);
+    minNews += maxNews;
 
+    setTimeout(() => {
+      footer.style.display = "block";
+      loadMoreBtn.style.display = "block";
+    }, 1000);
+  }
+
+  function loadNewsByType(newsType) {
+    footer.style.display = "none";
+    loadMoreBtn.style.display = "none";
+    minNews = 0;
+    currentNewsType = newsType;
+    newsContainer.innerHTML = '';
+    fetchNewsIds(newsType)
+      .then(ids => {
+        newsIds = ids;
+        getNews(newsIds);
+      })
+      .catch((error) => console.error(`Error fetching ${newsType} news IDs:`, error))
+      .finally(() => {
         setTimeout(() => {
           footer.style.display = "block";
           loadMoreBtn.style.display = "block";
         }, 1000);
-      })
-      .catch((error) => console.error("Error fetching new news IDs:", error));
+      });
   }
 
   loadNewStories();
 
   loadBestNewsBtn.addEventListener("click", () => {
-    footer.style.display = "none";
-    loadMoreBtn.style.display = "none";
-
-    callFetch(
-      "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
-    )
-      .then((newsIds) => {
-        newsContainer.innerHTML = "";
-        getNews(newsIds);
-        minNews += maxNews;
-        history.replaceState({}, document.title, "?type=best");
-      })
-      .catch((error) => console.error("Error fetching best news IDs:", error))
-      .finally(() => {
-        setTimeout(() => {
-          footer.style.display = "block";
-          loadMoreBtn.style.display = "block";
-        }, 1000);
-      });
+    loadNewsByType('best');
   });
 
   loadTopNewsBtn.addEventListener("click", () => {
-    footer.style.display = "none";
-    loadMoreBtn.style.display = "none";
-
-    callFetch(
-      "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
-    )
-      .then((newsIds) => {
-        newsContainer.innerHTML = "";
-        getNews(newsIds);
-        minNews += maxNews;
-        history.replaceState({}, document.title, "?type=top");
-      })
-      .catch((error) => console.error("Error fetching top news IDs:", error))
-      .finally(() => {
-        setTimeout(() => {
-          footer.style.display = "block";
-          loadMoreBtn.style.display = "block";
-        }, 1000);
-      });
+    loadNewsByType('top');
   });
 
   loadMoreBtn.addEventListener("click", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentNewsType = urlParams.get('type');
-
-    const fetchUrl =
-      currentNewsType === "best"
-        ? "https://hacker-news.firebaseio.com/v0/beststories.json"
-        : "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
-
-    callFetch(fetchUrl)
-      .then((newsIds) => {
-        getNews(newsIds);
-        minNews += maxNews;
-      })
-      .catch((error) => console.error("Error fetching news IDs:", error));
+    getNews(newsIds);
+    minNews += maxNews;
   });
 
   document.querySelector(".navbar-brand").addEventListener("click", () => {
-    loadNewStories();
-    history.replaceState({}, document.title, "?type=breaking");
+    loadNewsByType('breaking');
   });
+
+  
+  if (window.location.search.includes('type')) {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    loadNewsByType(type);
+  } else {
+    loadNewStories(); 
+  }
 });
