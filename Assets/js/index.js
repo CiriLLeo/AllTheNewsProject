@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loadBestNewsBtn = document.getElementById("best");
   const loadTopNewsBtn = document.getElementById("top");
-  const loadMoreBtn = document.getElementById("load-more-btn");
   const newsContainer = document.getElementById("news-container");
+  const loadMoreBtn = document.getElementById("load-more-btn");
+  const footer = document.querySelector("footer");
+
   let currentNewsType = "";
   let minNews = 0;
   const maxNews = 10;
@@ -73,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function loadNewStories() {
+    footer.style.display = "none";
+    loadMoreBtn.style.display = "none";
+
     callFetch(
       "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
     )
@@ -81,6 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
         newsContainer.innerHTML = "";
         getNews(newsIds);
         minNews += maxNews;
+
+        setTimeout(() => {
+          footer.style.display = "block";
+          loadMoreBtn.style.display = "block";
+        }, 1000);
       })
       .catch((error) => console.error("Error fetching new news IDs:", error));
   }
@@ -88,6 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadNewStories();
 
   loadBestNewsBtn.addEventListener("click", () => {
+    footer.style.display = "none";
+    loadMoreBtn.style.display = "none";
+
     callFetch(
       "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
     )
@@ -98,10 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
         minNews += maxNews;
         document.querySelector(".card-header").textContent = "Best News";
       })
-      .catch((error) => console.error("Error fetching best news IDs:", error));
+      .catch((error) => console.error("Error fetching best news IDs:", error))
+      .finally(() => {
+        setTimeout(() => {
+          footer.style.display = "block";
+          loadMoreBtn.style.display = "block";
+        }, 1000);
+      });
   });
 
   loadTopNewsBtn.addEventListener("click", () => {
+    footer.style.display = "none";
+    loadMoreBtn.style.display = "none";
+
     callFetch(
       "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
     )
@@ -112,7 +134,13 @@ document.addEventListener("DOMContentLoaded", () => {
         minNews += maxNews;
         document.querySelector(".card-header").textContent = "Top News";
       })
-      .catch((error) => console.error("Error fetching top news IDs:", error));
+      .catch((error) => console.error("Error fetching top news IDs:", error))
+      .finally(() => {
+        setTimeout(() => {
+          footer.style.display = "block";
+          loadMoreBtn.style.display = "block";
+        }, 1000);
+      });
   });
 
   loadMoreBtn.addEventListener("click", () => {
