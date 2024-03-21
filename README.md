@@ -32,8 +32,7 @@
 * [Acknowledgements](#acknowledgements)
 
 ## About The Project
-
-![Screen Shot](d)
+![screenshot](https://github.com/CiriLLeo/AllTheNewsProject/assets/148391026/b4adf10e-6601-4a52-880c-42264d6ba94d)
 
 This is my latest project developed in collaboration with Start2Impact University. A.T.N. is an innovative application designed to democratize the dissemination of tech-related information using the Hacker News service.
 
