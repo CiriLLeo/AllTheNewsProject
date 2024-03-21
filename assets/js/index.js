@@ -1,6 +1,5 @@
-import '../css/style.css'
-
 document.addEventListener("DOMContentLoaded", () => {
+
   const loadBestNewsBtn = document.getElementById("best");
   const loadTopNewsBtn = document.getElementById("top");
   const newsContainer = document.getElementById("news-container");
