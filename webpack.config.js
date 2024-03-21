@@ -8,12 +8,14 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const isProduction = process.env.NODE_ENV == 'production';
 
 
+const stylesHandler = MiniCssExtractPlugin.loader;
+
+
 
 const config = {
-    entry: 'Assets/js/index.js',
+    entry: './src/js/index.js',
     output: {
-        path: path.resolve(__dirname, 'Assets'),
-        clean: true
+        path: path.resolve(__dirname, 'dist'),
     },
     devServer: {
         open: true,
@@ -21,51 +23,10 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
-            meta: {
-              'og:title': { property: 'og:title', content: 'All Tech News' },
-              'og:description': {
-                property: 'og:description',
-                content:
-                  'All the news for tech people, using API from Hacker News.',
-              },
-              'og:type': { property: 'og:type', content: 'website' },
-              'og:url': {
-                property: 'og:url',
-                content: '',
-              },
-              'og:image': {
-                property: 'og:image',
-                content: 'Assets/img/android-chrome-512x512.png',
-              },
-              'og:image:alt': {
-                property: 'og:image:alt',
-                content: 'All Tech News',
-              },
-              'twitter:card': {
-                name: 'twitter:card',
-                content: 'summary_large_image',
-              },
-              'twitter:title': { name: 'twitter:title', content: 'All Tech News' },
-              'twitter:description': {
-                name: 'twitter:description',
-                content:
-                  'All the news for tech people, using API from Hacker News.',
-              },
-              'twitter:image': {
-                name: 'twitter:image',
-                content: 'Assets/img/android-chrome-512x512.png',
-              },
-              'twitter:image:alt': {
-                name: 'twitter:image:alt',
-                content: 'All Tech News',
-              },
-            },
-          }),
+            template: './src/index.html',
+        }),
 
-        new MiniCssExtractPlugin({
-            filename: 'Assets/css/style.css'
-        })
+        new MiniCssExtractPlugin(),
 
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
@@ -78,11 +39,15 @@ const config = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader,'css-loader'],
+                use: [stylesHandler,'css-loader'],
             },
             {
-                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset/resource',
+                test: /\.(png|svg|jpg|gif)$/i,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: 'img/', // Questo è il percorso relativo nella cartella 'dist' in cui verranno copiate le immagini
+                },
             },
 
             // Add your rules for custom modules here
@@ -94,8 +59,6 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        config.plugins.push(new MiniCssExtractPlugin());
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
