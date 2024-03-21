@@ -98,7 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
-  loadNewStories();
+  if (!localStorage.getItem("newsIds")) {
+    fetchNewsIds('breaking')
+      .then(ids => {
+        newsIds = ids;
+        localStorage.setItem("currentNewsType", currentNewsType);
+        localStorage.setItem("newsIds", JSON.stringify(newsIds));
+        loadNewStories();
+      })
+      .catch((error) => console.error("Error fetching breaking news IDs:", error));
+  } else {
+    loadNewStories();
+  }
 
   loadBestNewsBtn.addEventListener("click", () => {
     footer.style.display = "none";
@@ -111,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
-        getNews(newsIds);
+        loadNewStories();
       })
       .catch((error) => console.error("Error fetching best news IDs:", error))
       .finally(() => {
@@ -133,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
-        getNews(newsIds);
+        loadNewStories();
       })
       .catch((error) => console.error("Error fetching top news IDs:", error))
       .finally(() => {
@@ -160,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
-        getNews(newsIds);
+        loadNewStories();
       })
       .catch((error) => console.error("Error fetching breaking news IDs:", error))
       .finally(() => {
