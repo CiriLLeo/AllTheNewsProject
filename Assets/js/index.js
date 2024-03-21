@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let minNews = 0;
   const maxNews = 10;
-  let currentNewsType = 'breaking';
-  let newsIds = [];
+  let currentNewsType = localStorage.getItem("currentNewsType") || 'breaking';
+  let newsIds = JSON.parse(localStorage.getItem("newsIds")) || [];
 
   function callFetch(url) {
     return fetch(url).then((response) => response.json());
@@ -98,34 +98,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
-  function loadNewsByType(newsType) {
+  loadNewStories();
+
+  loadBestNewsBtn.addEventListener("click", () => {
     footer.style.display = "none";
     loadMoreBtn.style.display = "none";
     minNews = 0;
-    currentNewsType = newsType;
+    currentNewsType = 'best';
     newsContainer.innerHTML = '';
-    fetchNewsIds(newsType)
+    fetchNewsIds('best')
       .then(ids => {
         newsIds = ids;
+        localStorage.setItem("currentNewsType", currentNewsType);
+        localStorage.setItem("newsIds", JSON.stringify(newsIds));
         getNews(newsIds);
       })
-      .catch((error) => console.error(`Error fetching ${newsType} news IDs:`, error))
+      .catch((error) => console.error("Error fetching best news IDs:", error))
       .finally(() => {
         setTimeout(() => {
           footer.style.display = "block";
           loadMoreBtn.style.display = "block";
         }, 1000);
       });
-  }
-
-  loadNewStories();
-
-  loadBestNewsBtn.addEventListener("click", () => {
-    loadNewsByType('best');
   });
 
   loadTopNewsBtn.addEventListener("click", () => {
-    loadNewsByType('top');
+    footer.style.display = "none";
+    loadMoreBtn.style.display = "none";
+    minNews = 0;
+    currentNewsType = 'top';
+    newsContainer.innerHTML = '';
+    fetchNewsIds('top')
+      .then(ids => {
+        newsIds = ids;
+        localStorage.setItem("currentNewsType", currentNewsType);
+        localStorage.setItem("newsIds", JSON.stringify(newsIds));
+        getNews(newsIds);
+      })
+      .catch((error) => console.error("Error fetching top news IDs:", error))
+      .finally(() => {
+        setTimeout(() => {
+          footer.style.display = "block";
+          loadMoreBtn.style.display = "block";
+        }, 1000);
+      });
   });
 
   loadMoreBtn.addEventListener("click", () => {
@@ -134,15 +150,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelector(".navbar-brand").addEventListener("click", () => {
-    loadNewsByType('breaking');
+    footer.style.display = "none";
+    loadMoreBtn.style.display = "none";
+    minNews = 0;
+    currentNewsType = 'breaking';
+    newsContainer.innerHTML = '';
+    fetchNewsIds('breaking')
+      .then(ids => {
+        newsIds = ids;
+        localStorage.setItem("currentNewsType", currentNewsType);
+        localStorage.setItem("newsIds", JSON.stringify(newsIds));
+        getNews(newsIds);
+      })
+      .catch((error) => console.error("Error fetching breaking news IDs:", error))
+      .finally(() => {
+        setTimeout(() => {
+          footer.style.display = "block";
+          loadMoreBtn.style.display = "block";
+        }, 1000);
+      });
   });
-
-  
-  if (window.location.search.includes('type')) {
-    const params = new URLSearchParams(window.location.search);
-    const type = params.get('type');
-    loadNewsByType(type);
-  } else {
-    loadNewStories(); 
-  }
 });
