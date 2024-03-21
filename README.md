@@ -44,7 +44,7 @@ Try it  -> https://alltechnews.netlify.app/
 
 ## Built With
 
-HTML, JS, CSS AND WEBPACK
+[![My Skills](https://skillicons.dev/icons?i=js,html,css,bootstrap,webpack)](https://skillicons.dev)
 
 ### Creating A Pull Request
 
