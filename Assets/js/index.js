@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let minNews = 0;
   const maxNews = 10;
-  let currentNewsType = localStorage.getItem("currentNewsType") || 'breaking';
+  let currentNewsType = localStorage.getItem("currentNewsType") || "breaking";
   let newsIds = JSON.parse(localStorage.getItem("newsIds")) || [];
 
   function callFetch(url) {
@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function fetchNewsIds(newsType) {
     const url =
-      newsType === 'best'
+      newsType === "best"
         ? "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
-        : newsType === 'top'
+        : newsType === "top"
           ? "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
           : "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty";
-    
+
     return callFetch(url);
   }
 
@@ -99,14 +99,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (!localStorage.getItem("newsIds")) {
-    fetchNewsIds('breaking')
-      .then(ids => {
+    fetchNewsIds("breaking")
+      .then((ids) => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
         loadNewStories();
       })
-      .catch((error) => console.error("Error fetching breaking news IDs:", error));
+      .catch((error) =>
+        console.error("Error fetching breaking news IDs:", error)
+      );
   } else {
     loadNewStories();
   }
@@ -115,10 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
     footer.style.display = "none";
     loadMoreBtn.style.display = "none";
     minNews = 0;
-    currentNewsType = 'best';
-    newsContainer.innerHTML = '';
-    fetchNewsIds('best')
-      .then(ids => {
+    currentNewsType = "best";
+    newsContainer.innerHTML = "";
+    fetchNewsIds("best")
+      .then((ids) => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
@@ -137,10 +139,10 @@ document.addEventListener("DOMContentLoaded", () => {
     footer.style.display = "none";
     loadMoreBtn.style.display = "none";
     minNews = 0;
-    currentNewsType = 'top';
-    newsContainer.innerHTML = '';
-    fetchNewsIds('top')
-      .then(ids => {
+    currentNewsType = "top";
+    newsContainer.innerHTML = "";
+    fetchNewsIds("top")
+      .then((ids) => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
@@ -164,16 +166,18 @@ document.addEventListener("DOMContentLoaded", () => {
     footer.style.display = "none";
     loadMoreBtn.style.display = "none";
     minNews = 0;
-    currentNewsType = 'breaking';
-    newsContainer.innerHTML = '';
-    fetchNewsIds('breaking')
-      .then(ids => {
+    currentNewsType = "breaking";
+    newsContainer.innerHTML = "";
+    fetchNewsIds("breaking")
+      .then((ids) => {
         newsIds = ids;
         localStorage.setItem("currentNewsType", currentNewsType);
         localStorage.setItem("newsIds", JSON.stringify(newsIds));
         loadNewStories();
       })
-      .catch((error) => console.error("Error fetching breaking news IDs:", error))
+      .catch((error) =>
+        console.error("Error fetching breaking news IDs:", error)
+      )
       .finally(() => {
         setTimeout(() => {
           footer.style.display = "block";
