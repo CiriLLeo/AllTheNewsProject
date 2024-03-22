@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   // Chiamo elementi del DOM
   const loadBestNewsBtn = document.getElementById("best");
   const loadTopNewsBtn = document.getElementById("top");
@@ -55,8 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const cardHeader = document.createElement("div");
       cardHeader.classList.add("card-header");
-      // Impostiamo l'intestazione della carta in base al tipo di notizie
 
+      // Cambio'intestazione della carta in base al tipo di notizie
       if (currentNewsType === "best") {
         cardHeader.textContent = "Best News";
       } else if (currentNewsType === "top") {
@@ -109,8 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Controllo se sono presenti ID di notizie memorizzati nella memoria locale
   if (!localStorage.getItem("newsIds")) {
-
-  // Se non ci sono ID memorizzati, ottengo gli ID delle notizie in base al tipo corrente
+    // Se non ci sono ID memorizzati, ottengo gli ID delle notizie in base al tipo corrente
     fetchNewsIds("breaking")
       .then((ids) => {
         newsIds = ids;
@@ -122,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error fetching breaking news IDs:", error)
       );
   } else {
-
     // Se gli ID delle notizie sono già memorizzati, carichiamo le nuove storie
     loadNewStories();
   }
