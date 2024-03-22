@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // Gestore di eventi per il pulsante "Carica altro"
+  // Gestore di eventi per il pulsante "Load More"
   loadMoreBtn.addEventListener("click", () => {
     getNews(newsIds);
     minNews += maxNews;
