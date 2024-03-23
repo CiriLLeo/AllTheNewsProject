@@ -48,7 +48,7 @@ const config = {
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]',
-                    outputPath: 'img/', // Questo è il percorso relativo nella cartella 'dist' in cui verranno copiate le immagini
+                    outputPath: 'img/',
                 },
             },
 
