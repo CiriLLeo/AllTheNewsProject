@@ -1,3 +1,9 @@
+import 'bootstrap';
+import '../css/style.css';
+import 'axios';
+import 'lodash';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 document.addEventListener("DOMContentLoaded", () => {
   // Chiamo elementi del DOM
   const loadBestNewsBtn = document.getElementById("best");
@@ -49,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     newsArray.forEach((item) => {
       const card = document.createElement("div");
       card.classList.add("card", "border-success", "mb-3");
-      card.style.maxWidth = "50rem";
       card.classList.add("shadow-lg", "p-3", "bg-body-tertiary", "rounded");
 
       const cardHeader = document.createElement("div");

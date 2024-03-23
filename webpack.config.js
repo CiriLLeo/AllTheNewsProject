@@ -41,7 +41,7 @@ const config = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, stylesHandler,'style-loader','css-loader'],
+                use: ['style-loader','css-loader'],
             },
             {
                 test: /\.(png|svg|jpg|gif)$/i,
