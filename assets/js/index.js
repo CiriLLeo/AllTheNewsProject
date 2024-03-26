@@ -1,8 +1,7 @@
-import 'bootstrap';
-import '../css/style.css';
-import 'axios';
-import 'lodash';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap";
+import "../css/style.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import _ from "lodash";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Chiamo elementi del DOM
@@ -11,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const newsContainer = document.getElementById("news-container");
   const loadMoreBtn = document.getElementById("load-more-btn");
   const footer = document.querySelector("footer");
+  // importo axios
+  const axios = require("axios");
 
   // Variabili per gestire il caricamento delle notizie
   let minNews = 0;
@@ -18,36 +19,41 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentNewsType = localStorage.getItem("currentNewsType") || "breaking";
   let newsIds = JSON.parse(localStorage.getItem("newsIds")) || [];
 
-  // Funzione per effettuare richieste fetch e ottenere dati JSON
-  function callFetch(url) {
-    return fetch(url).then((response) => response.json());
+  // Funzione per ottenere gli ID delle notizie chiamando axios
+  async function fetchNewsIds(newsType) {
+    const urls = {
+      best: "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty",
+      top: "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty",
+      breaking:
+        "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty"
+    };
+
+    try {
+      const response = await axios.get(urls[newsType]);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching news IDs:", error);
+      throw error; // Rilancia l'errore per gestirlo al livello superiore
+    }
   }
 
-  // Funzione per ottenere gli ID delle notizie
-  function fetchNewsIds(newsType) {
-    const url =
-      newsType === "best"
-        ? "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
-        : newsType === "top"
-          ? "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
-          : "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty";
-
-    return callFetch(url);
-  }
-
-  // Funzione per ottenere le notizie in base agli ID
-  function getNews(ids) {
-    const promises = ids
+  // Funzione per ottenere le notizie in base agli ID tramite axios
+  async function getNews(ids) {
+    // utilizzo lodash per la catena di operazioni sugli array con _.chain
+    const promises = _.chain(ids)
       .slice(minNews, minNews + maxNews)
       .map((id) =>
-        callFetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
-      );
+        axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+      )
+      .value();
 
-    Promise.all(promises)
-      .then((news) => {
-        getNewsOnScreen(news);
-      })
-      .catch((error) => console.error("Error fetching news:", error));
+    try {
+      const responses = await Promise.all(promises);
+      const news = responses.map((response) => response.data);
+      getNewsOnScreen(news);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    }
   }
 
   // Funzione per visualizzare le notizie sullo schermo
