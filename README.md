@@ -32,7 +32,8 @@
 * [Acknowledgements](#acknowledgements)
 
 ## About The Project
-<a href="https://alltechnews.netlify.app/">![screenshot](https://github.com/CiriLLeo/AllTheNewsProject/assets/148391026/7138d188-ede6-479b-a09f-8218a57706c1)
+<a href="https://alltechnews.netlify.app/">![screenshot](https://github.com/CiriLLeo/AllTheNewsProject/assets/148391026/8132014b-a7e2-4607-b5a1-0f98adb8cb7d)
+
 </a>
 
 This is my latest project developed in collaboration with Start2Impact University. A.T.N. is an innovative application designed to democratize the dissemination of tech-related information using the Hacker News service.
@@ -60,7 +61,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/CiriLLeo/All
 * **Cirilleo** - *Leonardo Cirillo* - [Cirilleo](https://github.com/CiriLLeo)
 
 
-## Acknowledgements
+## Contact Me
 
 * [Linkedin](https://www.linkedin.com/in/leonardo-cirillo-5217421a1/)
 * [Instagram](https://www.instagram.com/cirilleo/)
