@@ -27,6 +27,9 @@
 
 * [About the Project](#about-the-project)
 * [Built With](#built-with)
+* [Getting Started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Installation](#installation)
 * [License](#license)
 * [Authors](#authors)
 * [Acknowledgements](#acknowledgements)
@@ -48,9 +51,31 @@ Try it  -> https://alltechnews.netlify.app/
 
 [![My Skills](https://skillicons.dev/icons?i=js,html,css,bootstrap,webpack)](https://skillicons.dev)
 
-### Creating A Pull Request
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+
+### Prerequisites
+
+This project requires NodeJS and NPM.
+
+### Installation
+
+1. Start with cloning this repo on your local machine:
+
+```sh
+$ git clone https://github.com/CiriLLeo/AllTheNewsProject.git
+$ cd AllTheNewsProject
+```
 
 
+## Usage
+
+```sh
+$ npm run build:dev
+```
+
+This task will create a distribution version of the project inside your local dist/ folder
 
 ## License
 
